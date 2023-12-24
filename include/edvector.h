@@ -39,8 +39,7 @@ vector_t* vec_new(const size_t data_size) {
 
 // Destructs a vector
 void vec_del(vector_t* vec) {
-    if (vec == NULL)
-        return;
+    assert(vec != NULL);
     free(vec->data);
     free(vec);
 }
@@ -54,6 +53,7 @@ int vec_empty(const vector_t* vec) {
 // Returns the object at index i without bounds check
 void* vec_at(const vector_t* vec, const size_t i) {
     assert(vec != NULL);
+    assert(i < vec->size);
     return (char*)vec->data + i * vec->data_size;
 }
 
@@ -78,8 +78,7 @@ void vec_pushb(vector_t* vec, const void* element) {
 // Removes an element from vec at index i
 void vec_remove(vector_t* vec, const size_t i) {
     assert(vec != NULL);
-    if (i >= vec->size)
-        return;
+    assert(i < vec->size);
     void* start = (char*)vec->data + i * vec->data_size;
     memcpy(start, (char*)start + vec->data_size, (vec->size - i) * vec->data_size);
     --vec->size;
@@ -89,8 +88,7 @@ void vec_remove(vector_t* vec, const size_t i) {
 // Inserts an element elem into vec at index i
 void vec_insert(vector_t* vec, const size_t i, const void* element) {
     assert(vec != NULL);
-    if (i > vec->size)
-        return;
+    assert(i <= vec->size);
     _vec_resize(vec);
     void* start = (char*)vec->data + i * vec->data_size;
     memcpy((char*)start + vec->data_size, start, (vec->size - i) * vec->data_size);
