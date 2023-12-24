@@ -15,15 +15,15 @@ typedef struct _vector_t {
     size_t _cap;
 } vector_t;
 
-// Resizes a vector according to doubling strategy
+// Resizes a vector using doubling strategy
 static inline void _vec_resize(vector_t* vec) {
     assert(vec != NULL);
     if (vec->_cap > VEC_MIN_CAP && vec->size < vec->_cap / 2) {
         vec->_cap /= 2;
-        vec->data = realloc(vec->data, vec->_cap * sizeof(vec->data_size));
+        vec->data = realloc(vec->data, vec->_cap * vec->data_size);
     } else if (vec->size >= vec->_cap) {
         vec->_cap *= 2;
-        vec->data = realloc(vec->data, vec->_cap * sizeof(vec->data_size));
+        vec->data = realloc(vec->data, vec->_cap * vec->data_size);
     }
 }
 
