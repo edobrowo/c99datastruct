@@ -1,9 +1,10 @@
 #include <assert.h>
+#include <math.h>
 #include <stdio.h>
 
 #include "edvector.h"
 
-void vector_test() {
+void vector_test_basic() {
     vector_t* vec = vec_new(sizeof(int));
     int v[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
@@ -106,6 +107,22 @@ void vector_test() {
     vec_del(vec);
 }
 
+void vector_test_squares() {
+    vector_t* vec = vec_new(sizeof(int));
+    size_t n = 10000;
+    for (size_t i = 0; i < n; ++i) {
+        int v = i * i;
+        vec_pushb(vec, (void*)&v);
+    }
+    for (size_t i = 0; i < n / 2; ++i) {
+        vec_remove(vec, i);
+    }
+    assert(vec->size == 5000);
+    assert(vec->_cap == 5120);
+    assert(*(int*)vec_at(vec, vec->size - 1) == 9999 * 9999);
+}
+
 int main() {
-    vector_test();
+    vector_test_basic();
+    vector_test_squares();
 }
